@@ -183,15 +183,8 @@
   <ul>
     <li><strong>【How to use】</strong>
       <ul>
-        <li>step0. Set the UE time correctly. ex:<br>
-          <span class="red">date -s "2024-03-12 10:22:10"</span>
-        </li>
-        <li>step1. MobaXterm Session -> SSH -> Termnial settings -> Select "Log terminal output to": _DesktopDir_</li>
-        <li>step2. ssh into CPE. ex: 10.205.164.10 </li>
-        <li>step3-1 【ATOP_CPE】use below command to read at+bnrinfo: read every 60 sec, until 3600 sec <br>
-          <span class="red">start_time=$(date +%s); while [ $(( $(date +%s) - $start_time )) -lt 3600 ]; do echo $(date +%T) ; at+bnrinfo ; sleep 60 ; done </span><br>
-        </li>
-        <li>step4. copy the output from terminal and paste it in the input box below.</li>
+        <li>Paste the QA 5-great report RSRP below</li>
+		<br>
       </ul>
     </li>
 
