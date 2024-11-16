@@ -1,0 +1,207 @@
+<!-- 
+  Copyright © [2023] [Dustin_Chen]. All rights reserved.
+  Author: Dustin_Chen
+  Email:  Dustin_Chen@compal.com or chuhpsdustin@gmail.com
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA_RSRP_RX0123</title>
+  <style>
+        body {
+            line-height: 1.2;
+            font-size: 14px;
+            font-family: Roboto, sans-serif;
+            white-space: nowrap; /* Prevent automatic line breaks */
+            overflow-x: auto; /* Enable horizontal scrollbar */
+        }
+
+    canvas {
+      max-width: 1500px;
+      max-height: 300px;
+      margin: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: auto;
+      margin: 15px;
+    }
+
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 6px;
+    }
+
+    .red {
+      color: red;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var myChart; // Declare chart variable
+
+    function parseLog() {
+      var inputText = document.getElementById('logInput').value;
+
+      // Debug: print the raw input text
+      console.log("Input text:", inputText);
+
+      // Updated regular expression to match time, RSRP and RX0-RX3 RSRP values
+      var regex = /\[(\d{2}\/\d{2} \d{2}:\d{2}:\d{2})\].*?RSRP\s*(-?\d+)\s*dBm[^]*?RX0.*?rsrp:\s*(-?\d+)\s*dBm[^]*?RX1.*?rsrp:\s*(-?\d+)\s*dBm[^]*?RX2.*?rsrp:\s*(-?\d+)\s*dBm[^]*?RX3.*?rsrp:\s*(-?\d+)\s*dBm/g;
+
+      // Match regular expressions against input text
+      var matches = [...inputText.matchAll(regex)];
+
+      var times = [];
+      var rsrp = [];
+      var rx0Rsrp = [];
+      var rx1Rsrp = [];
+      var rx2Rsrp = [];
+      var rx3Rsrp = [];
+
+      // Collect matched data
+      matches.forEach(match => {
+        times.push(match[1]); // time
+        rsrp.push(match[2]); // RSRP
+        rx0Rsrp.push(match[3]); // RX0 RSRP
+        rx1Rsrp.push(match[4]); // RX1 RSRP
+        rx2Rsrp.push(match[5]); // RX2 RSRP
+        rx3Rsrp.push(match[6]); // RX3 RSRP
+      });
+
+      // Debug: check if data has been collected
+      console.log("Times:", times);
+      console.log("RSRP:", rsrp);
+      console.log("RX0 RSRP:", rx0Rsrp);
+      console.log("RX1 RSRP:", rx1Rsrp);
+      console.log("RX2 RSRP:", rx2Rsrp);
+      console.log("RX3 RSRP:", rx3Rsrp);
+
+      if (times.length === 0) {
+        console.error("No valid data to display.");
+        return; // If no valid data found, stop further processing
+      }
+
+      // Clear previous chart data if exists
+      if (myChart) {
+        myChart.destroy();
+      }
+
+      var ctx = document.getElementById('chart').getContext('2d');
+      myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: times, // Use the extracted times
+          datasets: [
+            {
+              label: 'RSRP',
+              data: rsrp,
+              pointStyle: 'circle', // Set point style to circle
+              pointRadius: 0,
+              pointBackgroundColor: 'rgba(0, 153, 0, 1)', // Green color
+              borderColor: 'rgba(0, 153, 0, 1)', // Green color
+              borderWidth: 1, // Width of the line
+              fill: false
+            },
+            {
+              label: 'RX0 RSRP',
+              data: rx0Rsrp,
+              pointStyle: 'circle',
+              pointRadius: 0,
+              pointBackgroundColor: 'rgba(255, 102, 0, 1)', // Orange color
+              borderColor: 'rgba(255, 102, 0, 1)',
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: 'RX1 RSRP',
+              data: rx1Rsrp,
+              pointStyle: 'circle',
+              pointRadius: 0,
+              pointBackgroundColor: 'rgba(150, 150, 150, 1)', // Gray color
+              borderColor: 'rgba(150, 150, 150, 1)',
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: 'RX2 RSRP',
+              data: rx2Rsrp,
+              pointStyle: 'circle',
+              pointRadius: 0,
+              pointBackgroundColor: 'rgba(255, 200, 103, 1)', // Yellow color
+              borderColor: 'rgba(253, 205, 3, 1)',
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: 'RX3 RSRP',
+              data: rx3Rsrp,
+              pointStyle: 'circle',
+              pointRadius: 0,
+              pointBackgroundColor: 'rgba(0, 102, 204, 1)', // Dark Blue color
+              borderColor: 'rgba(0, 102, 204, 1)',
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'time',
+              time: {
+                unit: 'minute',
+                displayFormats: {
+                  minute: 'HH:mm'
+                }
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <h2>QA_RSRP_RX0123</h2>
+  <p style="margin: 0;">Author: Dustin_Chen, email: <a href="mailto:Dustin_Chen@compal.com"
+      style="line-height: 1;">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com"
+      style="line-height: 1;">chuhpsdustin@gmail.com</a></p>
+  <ul>
+    <li><strong>【How to use】</strong>
+      <ul>
+        <li>step0. Set the UE time correctly. ex:<br>
+          <span class="red">date -s "2024-03-12 10:22:10"</span>
+        </li>
+        <li>step1. MobaXterm Session -> SSH -> Termnial settings -> Select "Log terminal output to": _DesktopDir_</li>
+        <li>step2. ssh into CPE. ex: 10.205.164.10 </li>
+        <li>step3-1 【ATOP_CPE】use below command to read at+bnrinfo: read every 60 sec, until 3600 sec <br>
+          <span class="red">start_time=$(date +%s); while [ $(( $(date +%s) - $start_time )) -lt 3600 ]; do echo $(date +%T) ; at+bnrinfo ; sleep 60 ; done </span><br>
+        </li>
+        <li>step4. copy the output from terminal and paste it in the input box below.</li>
+      </ul>
+    </li>
+
+    <li><strong>【Enter your Log】</strong><br>
+      <textarea id="logInput" rows="15" cols="100" style="width: 100%;" placeholder="Paste the log data here"></textarea><br><br>
+      <button onclick="parseLog()">Parse and draw RSRP</button>
+    </li>
+
+    <canvas id="chart"></canvas>
+
+  </ul>
+</body>
+</html>
