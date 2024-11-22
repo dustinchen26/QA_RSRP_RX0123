@@ -20,7 +20,7 @@
         }
 
     canvas {
-      max-width: 1500px;
+      max-width: 1000px;
       max-height: 300px;
       margin: 20px;
     }
@@ -40,6 +40,12 @@
     .red {
       color: red;
     }
+
+/* New CSS to control textarea width and height */
+#logInput{
+    width: 60%; /* Adjust width to 60% of the parent container */
+    height: 250px; /* Set a fixed height for the input area */
+}
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -189,7 +195,7 @@
     </li>
 
     <li><strong>【Enter your Log】</strong><br>
-      <textarea id="logInput" rows="15" cols="100" style="width: 100%;" placeholder="Example as below:
+      <textarea id="logInput" rows="15" cols="100"   placeholder="Example as below:
 Test Program: 1.0.0.0
 ****************************** Loop: 1  ******************************
 ****************************** [1]TestItem: RSRP@-W:1  ******************************
@@ -198,52 +204,30 @@ Test Program: 1.0.0.0
 cmd: adb -s 1930fc1f shell Query Connection Status
 Loop: 0 , Wait: 1s
 at+bnrinfo
-
 NR BAND:79, EARFCN:720288 DL_bandwidth:100MHz
-
 physical cell ID:19, averaged PUSCH TX power :10 dBm, averaged PUCCH TX power :1 dBm,
-
 RX Power Info:
-
 RSRQ -11 dB, RSRP -82 dBm,SINR 30 dB
-
 RX0 power: -71 dBm,ecio: -10 dB, rsrp: -81 dBm, phase: 0 degree, sinr: 30 dB
-
 RX1 power: -74 dBm,ecio: -10 dB, rsrp: -85 dBm, phase: 0 degree, sinr: 30 dB
-
 RX2 power: -79 dBm,ecio: -10 dB, rsrp: -89 dBm, phase: 0 degree, sinr: 29 dB
-
 RX3 power: -75 dBm,ecio: -10 dB, rsrp: -85 dBm,phase: 0 degree,sinr: 16 dB
-
 NR CQI 255,RANK 255
-
 Serving Beam SSB index 0,FR2 serving Beam:255,255
-
 OK
 
 [11/15 14:05:02]	cell ID:19,RSRQ -11 dB, RSRP -82 dBm,SINR 30 dB
 at+bnrinfo
-
 NR BAND:79, EARFCN:720288 DL_bandwidth:100MHz
-
 physical cell ID:19, averaged PUSCH TX power :1 dBm, averaged PUCCH TX power :3 dBm,
-
 RX Power Info:
-
 RSRQ -11 dB, RSRP -82 dBm,SINR 30 dB
-
 RX0 power: -71 dBm,ecio: -10 dB, rsrp: -82 dBm, phase: 0 degree, sinr: 30 dB
-
 RX1 power: -75 dBm,ecio: -10 dB, rsrp: -85 dBm, phase: 0 degree, sinr: 30 dB
-
 RX2 power: -79 dBm,ecio: -10 dB, rsrp: -89 dBm, phase: 0 degree, sinr: 29 dB
-
 RX3 power: -75 dBm,ecio: -10 dB, rsrp: -86 dBm,phase: 0 degree,sinr: 29 dB
-
 NR CQI 255,RANK 255
-
 Serving Beam SSB index 0,FR2 serving Beam:255,255
-
 OK" ></textarea><br><br>
       <button onclick="parseLog()">Parse and draw RSRP</button>
     </li>
